@@ -1,54 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:phimfree_app/src/components/base/appbar/app_bar.widget.dart';
+import 'package:phimfree_app/src/utils/colors.dart';
 
 class AppScaffoldWidget extends StatelessWidget {
   final Widget child;
   final String title;
   final bool isBack;
+  final Widget? appBar;
   const AppScaffoldWidget({
     super.key,
     required this.child,
-    required this.title,
+    this.title = '',
     this.isBack = true,
+    this.appBar,
   });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primary,
       body: Column(
         children: [
-          SizedBox(height: MediaQuery.of(context).viewPadding.top),
-
-          ///appbar
-          Container(
-            width: double.infinity,
-            height: 120,
-            padding: const EdgeInsets.all(10),
-            child: Stack(
-              children: [
-                if (isBack)
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton.filled(
-                      onPressed: () {},
-                      icon: const Icon(
-                        Icons.arrow_back_ios_new_rounded,
-                      ),
-                    ),
-                  ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+          SizedBox(height: MediaQuery.of(context).padding.top),
+          appBar ??
+              (title != ''
+                  ? AppBarWidget(title: title, isBack: isBack)
+                  : const SizedBox.shrink()),
+          Expanded(
+            child: child,
           ),
-          Expanded(child: child),
         ],
       ),
     );
